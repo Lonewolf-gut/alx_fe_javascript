@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
   displayRandomQuote();
 
-  newQuoteBtn.addEventListener("click", displayRandomQuote);
+  newQuoteBtn.addEventListener("click", showRandomQuote);
   addQuoteBtn.addEventListener("click", addQuote);
 
-  function displayRandomQuote() {
+  function showRandomQuote() {
     if (quotes.length > 0) {
       const randomIndex = Math.floor(Math.random() * quotes.length);
       const randomQuote = quotes[randomIndex];
