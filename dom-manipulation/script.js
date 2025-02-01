@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
   categoryFilter.addEventListener("change", filterQuotes);
 
   // Fetch and sync server data every 30 seconds
-  setInterval(fetchQuotesFromServer, 30000);
+  setInterval(syncQuotes, 30000);
 
   function showRandomQuote() {
     const filteredQuotes = getFilteredQuotes();
@@ -107,8 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("quotes", JSON.stringify(quotes));
   }
 
-  // Fetching quotes from server and handling sync
-  async function fetchQuotesFromServer() {
+  // Fetching quotes from the server and syncing locally
+  async function syncQuotes() {
     try {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/posts"
@@ -126,11 +126,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Handling syncing logic
+  // Handling syncing logic for quotes
   function handleNewQuotes(newQuotes) {
     const storedQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
     const lastSyncVersion = localStorage.getItem("lastSyncVersion") || 0;
 
+    // If the server data is more recent than the stored data
     if (newQuotes.length > storedQuotes.length) {
       console.log("Syncing new quotes from server...");
       localStorage.setItem("quotes", JSON.stringify(newQuotes));
