@@ -162,6 +162,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (response.ok) {
         const result = await response.json();
         console.log("Quotes successfully posted to the server:", result);
+        // Notify user about successful sync
+        alert("Quotes synced with server!");
       } else {
         console.error("Failed to post quotes to the server.");
       }
