@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Fetching quotes from the server and syncing locally
-  async function syncQuotes() {
+  async function fetchQuotesFromServer() {
     try {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/posts"
@@ -168,5 +168,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Error posting quotes to server:", error);
     }
+  }
+
+  // Syncing quotes every 30 seconds
+  async function syncQuotes() {
+    await fetchQuotesFromServer();
   }
 });
