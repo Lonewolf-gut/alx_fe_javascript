@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
       category: "Motivation",
     },
   ];
-  displayRandomQuote();
+  showRandomQuote();
 
   newQuoteBtn.addEventListener("click", showRandomQuote);
   addQuoteBtn.addEventListener("click", addQuote);
