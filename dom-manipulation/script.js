@@ -138,6 +138,34 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Quotes have been updated from the server.");
       populateCategories();
       showRandomQuote();
+
+      // Post the new quotes to the server
+      postQuotesToServer(newQuotes);
+    }
+  }
+
+  // Posting new or updated quotes to the server
+  async function postQuotesToServer(newQuotes) {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newQuotes),
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Quotes successfully posted to the server:", result);
+      } else {
+        console.error("Failed to post quotes to the server.");
+      }
+    } catch (error) {
+      console.error("Error posting quotes to server:", error);
     }
   }
 });
