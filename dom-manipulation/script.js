@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  createAddQuoteForm();
   const quoteDisplay = document.getElementById("quoteDisplay");
   const newQuoteBtn = document.getElementById("newQuote");
   const newQuoteText = document.getElementById("newQuoteText");
@@ -48,11 +49,15 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("quotes", JSON.stringify(quotes));
   }
 
-  document.body.innerHTML += `
-        <div>
+  function createAddQuoteForm() {
+    const formContainer = document.createElement("div");
+    formContainer.innerHTML = `
             <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
             <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
             <button id="addQuote">Add Quote</button>
-        </div>
-    `;
+        `;
+    document.body.appendChild(formContainer);
+
+    document.getElementById("addQuote").addEventListener("click", addQuote);
+  }
 });
