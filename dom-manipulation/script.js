@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ];
 
-  // Populate categories when the page loads
+  // Populate categories on page load
   populateCategories();
   filterQuotes();
 
@@ -25,6 +25,9 @@ document.addEventListener("DOMContentLoaded", function () {
   exportQuotesBtn.addEventListener("click", exportQuotes);
   importFileInput.addEventListener("change", importFromJsonFile);
   categoryFilter.addEventListener("change", filterQuotes);
+
+  // Fetch and sync server data every 30 seconds
+  setInterval(fetchQuotesFromServer, 30000);
 
   function showRandomQuote() {
     const filteredQuotes = getFilteredQuotes();
@@ -102,5 +105,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
+  }
+
+  // Fetching quotes from server and handling sync
+  function fetchQuotesFromServer() {
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => response.json())
+      .then((data) => {
+        const newQuotes = data.map((quote, index) => ({
+          text: quote.title,
+          category: index % 2 === 0 ? "Motivation" : "Life",
+        }));
+        handleNewQuotes(newQuotes);
+      })
+      .catch((error) =>
+        console.error("Error fetching data from server:", error)
+      );
+  }
+
+  // Handling syncing logic
+  function handleNewQuotes(newQuotes) {
+    const storedQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+    const lastSyncVersion = localStorage.getItem("lastSyncVersion") || 0;
+
+    if (newQuotes.length > storedQuotes.length) {
+      console.log("Syncing new quotes from server...");
+      localStorage.setItem("quotes", JSON.stringify(newQuotes));
+      localStorage.setItem("lastSyncVersion", Date.now());
+      alert("Quotes have been updated from the server.");
+      populateCategories();
+      showRandomQuote();
+    }
   }
 });
