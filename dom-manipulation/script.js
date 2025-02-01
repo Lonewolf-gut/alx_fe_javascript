@@ -82,14 +82,14 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.removeChild(a);
   }
 
-  function importFromJsonFile(event) {
+  async function importFromJsonFile(event) {
     const fileReader = new FileReader();
-    fileReader.onload = function (event) {
+    fileReader.onload = async function (event) {
       try {
         const importedQuotes = JSON.parse(event.target.result);
         if (Array.isArray(importedQuotes)) {
           quotes.push(...importedQuotes);
-          saveQuotes();
+          await saveQuotes();
           alert("Quotes imported successfully!");
           populateCategories();
           showRandomQuote();
@@ -103,24 +103,27 @@ document.addEventListener("DOMContentLoaded", function () {
     fileReader.readAsText(event.target.files[0]);
   }
 
-  function saveQuotes() {
+  async function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
   }
 
   // Fetching quotes from server and handling sync
-  function fetchQuotesFromServer() {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((data) => {
-        const newQuotes = data.map((quote, index) => ({
-          text: quote.title,
-          category: index % 2 === 0 ? "Motivation" : "Life",
-        }));
-        handleNewQuotes(newQuotes);
-      })
-      .catch((error) =>
-        console.error("Error fetching data from server:", error)
+  async function fetchQuotesFromServer() {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts"
       );
+      const data = await response.json();
+
+      const newQuotes = data.map((quote, index) => ({
+        text: quote.title,
+        category: index % 2 === 0 ? "Motivation" : "Life",
+      }));
+
+      handleNewQuotes(newQuotes);
+    } catch (error) {
+      console.error("Error fetching data from server:", error);
+    }
   }
 
   // Handling syncing logic
