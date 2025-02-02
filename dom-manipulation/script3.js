@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
       category: "Life",
     },
     {
-      text: "Do what you can, with what you have, where you are.",
+      text: "Do what you can, with what you have, where yosu are.",
       category: "Motivation",
     },
   ];
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     fileReader.readAsText(event.target.files[0]);
   }
-
+  //updated the local storage.
   async function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
   }
